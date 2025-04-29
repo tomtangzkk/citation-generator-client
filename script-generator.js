@@ -68,15 +68,17 @@ const firebaseConfig = {
 
   // ====== Generate Random Citation ======
 async function generateRandom() {
-    try {
-      const res = await fetch("https://citedfromwithin-3fmxiqes6-tom-tangzks-projects.vercel.app/api/generate-citation");
-      const data = await res.json();
-      document.getElementById('name').value = data.name;
-      document.getElementById('work').value = data.work;
-    } catch (error) {
-      console.error("Error generating random citation:", error);
-      alert("Failed to generate random citation. Please try again later.");
-    }
+  try {
+    const res = await fetch("https://citedfromwithin-3fmxiqes6-tom-tangzks-projects.vercel.app/api/generate-citation", {
+      method: "GET",
+      mode: "cors"
+    });
+    const data = await res.json();
+    document.getElementById('name').value = data.name;
+    document.getElementById('work').value = data.work;
+  } catch (error) {
+    console.error("Error generating random citation:", error);
+    alert("Failed to generate citation. Please try again later.");
   }
-  
-  
+}
+
