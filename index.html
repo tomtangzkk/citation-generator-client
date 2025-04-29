@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Generate Citation</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+  <div class="generator-row">
+    <input type="text" id="name" placeholder="Name">
+    <em><input type="text" id="work" placeholder="Work Title"></em>,
+    <span id="location">Locating...</span>,
+    <span id="current-time">Loading time...</span>.
+    <button onclick="addCitation()">Add Citation to the Book</button>
+    <button onclick="generateRandom()">Random</button>
+
+  </div>
+
+  <script src="script-generator.js"></script>
+</body>
+</html>

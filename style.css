@@ -1,0 +1,112 @@
+/* 通用基础设置 */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Times New Roman', serif;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+  
+  /* ----------------- */
+  /* index.html 生成Citation页面 */
+  /* ----------------- */
+  
+  .generator-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 1em;
+    margin-top: 50px;
+    flex-wrap: wrap; /* 适应小屏幕 */
+  }
+  
+  .generator-row input[type="text"] {
+    border: none;
+    border-bottom: 1px solid black;
+    background: transparent;
+    font-size: 1em;
+    text-align: center;
+    padding: 3px 5px;
+    width: 140px;
+  }
+  
+  .generator-row em {
+    font-style: italic;
+  }
+  
+  .generator-row span {
+    font-size: 1em;
+  }
+  
+  .generator-row button {
+    padding: 5px 15px;
+    font-size: 1em;
+    background: black;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .generator-row button:hover {
+    background-color: #333;
+  }
+  
+  /* ----------------- */
+  /* book.html 书籍阅读页面 */
+  /* ----------------- */
+  
+  .double-page-container {
+    display: flex;
+    width: 80%;
+    max-width: 1000px;
+    height: 60vh;
+    border: 0.5pt solid black;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+  
+  .page {
+    width: 50%;
+    height: 100%;
+    padding: 40px;
+    box-sizing: border-box;
+    border-right: 0.25pt solid black;
+    font-size: 1.25em;
+    line-height: 1.6;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .right-page {
+    border-right: none;
+  }
+  
+  /* 翻页按钮区域 */
+  .nav-container {
+    margin-top: 30px;
+  }
+  
+  .nav-container button {
+    padding: 10px 20px;
+    font-size: 1em;
+    background: black;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .nav-container button:hover {
+    background-color: #333;
+  }
+  
