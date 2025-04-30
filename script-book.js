@@ -8,12 +8,12 @@ const firebaseConfig = {
     appId: "1:783270994329:web:bb54fdaf0374f92b33f308",
     measurementId: "G-72WM88H17N"
   };
-  
+
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 let citations = [];
-let shownPairs = new Set(); // 记录已显示过的组合
+let shownPairs = new Set(); // 用于记录已展示过的组合
 
 function loadAllCitations() {
   db.collection('citations').orderBy('timestamp', 'asc').get()
@@ -39,9 +39,9 @@ function loadRandomCitation() {
   }
 
   const totalPairs = (citations.length * (citations.length - 1)) / 2;
+
   if (shownPairs.size >= totalPairs) {
-    alert("You've seen all available citation combinations.");
-    return;
+    shownPairs.clear(); // reset 所有组合，重新开始
   }
 
   let i1, i2, key;
