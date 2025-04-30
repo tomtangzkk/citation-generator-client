@@ -140,3 +140,40 @@ body {
   border-radius: 5px;
   cursor: pointer;
 }
+
+@media (max-width: 768px) {
+  .double-page-container {
+    flex-direction: column;
+    width: 90vw;
+    height: auto;
+    border: none;
+  }
+
+  .page {
+    width: 100%;
+    height: auto;
+    padding: 20px;
+    border-right: none;
+    border-bottom: 1px solid black;
+    font-size: 1em;
+    text-align: left;
+  }
+
+  .right-page {
+    border-bottom: none;
+  }
+
+  .nav-container {
+    flex-direction: column;
+    gap: 10px;
+    width: 90%;
+    margin-top: 20px;
+  }
+
+  .nav-container button {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.1em;
+  }
+}
+
