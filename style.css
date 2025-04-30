@@ -137,4 +137,30 @@ body {
   cursor: pointer;
 }
 
+.volume-grid {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.volume-grid button {
+  padding: 20px;
+  font-size: 1.2em;
+  background: black;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 160px;
+  height: 120px;
+  text-align: center;
+  line-height: 1.5;
+}
+
+.volume-grid button:hover {
+  background-color: #333;
+}
+
 
