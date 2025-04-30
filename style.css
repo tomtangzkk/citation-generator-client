@@ -19,7 +19,7 @@ body {
   align-items: center;    /* 居中对齐 */
   justify-content: center;
   gap: 15px;
-  font-size: 0.75em;
+  font-size: 1em;
   color: black;
 }
 
@@ -29,7 +29,7 @@ body {
   border: none;
   border-bottom: 1px solid white;
   background: transparent;
-  font-size: 0.75em;
+  font-size: 1em;
   text-align: center;
   padding: 3px 5px;
   width: 140px;
