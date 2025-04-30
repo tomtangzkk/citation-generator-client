@@ -8,28 +8,15 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
-  <div id="cover-page" class="cover-page">
-    <div class="cover-text">book of<br>citation</div>
-    <button onclick="enterBook()" class="enter-button">Enter</button>
+  <div class="double-page-container">
+    <div class="page left-page" id="left-page">Loading...</div>
+    <div class="page right-page" id="right-page">Loading...</div>
   </div>
 
-  <div id="book-content" style="display: none;">
-    <div class="double-page-container">
-      <div class="page left-page" id="left-page">Loading...</div>
-      <div class="page right-page" id="right-page">Loading...</div>
-    </div>
-    <div class="nav-container">
-      <button onclick="loadRandomCitation()">Next Spread →</button>
-      <button onclick="window.location.href='index.html'">← Return</button>
-    </div>
+  <div class="nav-container">
+    <button onclick="loadRandomCitation()">Next Spread →</button>
   </div>
 
-  <script>
-    function enterBook() {
-      document.getElementById('cover-page').style.display = 'none';
-      document.getElementById('book-content').style.display = 'block';
-    }
-  </script>
   <script src="script-book.js"></script>
 </body>
 </html>
