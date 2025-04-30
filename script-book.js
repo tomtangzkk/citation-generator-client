@@ -21,8 +21,7 @@ A poem written without language. Words borrowed, translated into images. A synta
   { citation_text: `Tang, Tom. *Paprika! (Palimpsest).* Graphic publication, Fall 2023.
 The site leaves its own trace. Layers printed, scraped, rewritten. Time thickens on paper.` }
 ];
-
-// ====== Firebase Config & Loading ======
+// ====== Firebase Config ======
 const firebaseConfig = {
   apiKey: "AIzaSyBx7AQZHanzqolsTz9akbUlU5Im_Fh_1z8",
   authDomain: "citedfromwithinitself.firebaseapp.com",
@@ -36,26 +35,42 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
+// ====== Get Current Volume from URL ======
+const urlParams = new URLSearchParams(window.location.search);
+const currentVolume = urlParams.get('volume') || 'volume1';
+
 let allCitations = [];
 let citationPool = [];
 
 function loadAllCitations() {
-  db.collection('citations').orderBy('timestamp', 'asc').get()
-    .then(snapshot => {
-      const liveCitations = snapshot.docs.map(doc => doc.data()).filter(c => !!c.citation_text?.trim());
-      allCitations = [...staticCitations, ...liveCitations];
-
-      if (allCitations.length > 1) {
-        resetCitationPool();
-        loadNextSpread();
-      } else {
-        document.getElementById('left-page').textContent = allCitations[0]?.citation_text || "No citation.";
+  if (currentVolume === 'volume1') {
+    allCitations = [...staticCitations];
+    finishLoading();
+  } else {
+    db.collection('volumes').doc(currentVolume).collection('citations')
+      .orderBy('timestamp', 'asc')
+      .get()
+      .then(snapshot => {
+        const liveCitations = snapshot.docs.map(doc => doc.data()).filter(c => !!c.citation_text?.trim());
+        allCitations = [...liveCitations];
+        finishLoading();
+      })
+      .catch(error => {
+        console.error(`Error loading citations for ${currentVolume}:`, error);
+        document.getElementById('left-page').textContent = "Error loading.";
         document.getElementById('right-page').textContent = "";
-      }
-    })
-    .catch(error => {
-      console.error("Error loading citations:", error);
-    });
+      });
+  }
+}
+
+function finishLoading() {
+  if (allCitations.length > 1) {
+    resetCitationPool();
+    loadNextSpread();
+  } else {
+    document.getElementById('left-page').textContent = allCitations[0]?.citation_text || "No citation.";
+    document.getElementById('right-page').textContent = "";
+  }
 }
 
 function resetCitationPool() {
