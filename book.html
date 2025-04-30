@@ -2,24 +2,22 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Select Volume</title>
+  <title>Citation Book</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
-  <div class="cover-page">
-    <div class="cover-text">Cited from Within Itself</div>
-    <div class="volume-grid">
-      <button onclick="enterVolume('volume1')">Volume 1 (Local)</button>
-      <button onclick="enterVolume('volume2')">Volume 2</button>
-      <button onclick="enterVolume('volume3')">Volume 3</button>
-      <!-- 更多卷自动生成或静态加 -->
-    </div>
+  <div class="double-page-container">
+    <div class="page left-page" id="left-page">Loading...</div>
+    <div class="page right-page" id="right-page">Loading...</div>
   </div>
 
-  <script>
-    function enterVolume(volume) {
-      window.location.href = `reader.html?volume=${volume}`;
-    }
-  </script>
+  <div class="nav-container">
+    <button onclick="loadNextSpread()">Next Spread →</button>
+     <button onclick="window.location.href='index.html'">Add Citation</button>
+  </div>
+
+  <script src="script-book.js"></script>
 </body>
 </html>
