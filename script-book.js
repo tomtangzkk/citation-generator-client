@@ -8,22 +8,22 @@ const firebaseConfig = {
     appId: "1:783270994329:web:bb54fdaf0374f92b33f308",
     measurementId: "G-72WM88H17N"
   };
-
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 let citations = [];
-let shownPairs = new Set(); // 用于记录已展示过的组合
+let combinationPool = [];
 
 function loadAllCitations() {
   db.collection('citations').orderBy('timestamp', 'asc').get()
     .then(snapshot => {
       citations = snapshot.docs.map(doc => doc.data());
-      if (citations.length > 0) {
+      if (citations.length > 1) {
+        createCombinationPool();
         loadRandomCitation();
       } else {
-        document.getElementById('left-page').textContent = "No citations yet.";
-        document.getElementById('right-page').textContent = "Add a citation to begin.";
+        document.getElementById('left-page').textContent = citations[0]?.citation_text || "No citation.";
+        document.getElementById('right-page').textContent = "";
       }
     })
     .catch(error => {
@@ -31,32 +31,32 @@ function loadAllCitations() {
     });
 }
 
+function createCombinationPool() {
+  combinationPool = [];
+  for (let i = 0; i < citations.length; i++) {
+    for (let j = i + 1; j < citations.length; j++) {
+      combinationPool.push([i, j]);
+    }
+  }
+  shuffleArray(combinationPool); // 打乱顺序
+}
+
 function loadRandomCitation() {
-  if (citations.length < 2) {
-    document.getElementById('left-page').textContent = citations[0]?.citation_text || "No citation.";
-    document.getElementById('right-page').textContent = "";
-    return;
+  if (combinationPool.length === 0) {
+    createCombinationPool(); // 用完之后重新生成
   }
 
-  const totalPairs = (citations.length * (citations.length - 1)) / 2;
-
-  if (shownPairs.size >= totalPairs) {
-    shownPairs.clear(); // reset 所有组合，重新开始
-  }
-
-  let i1, i2, key;
-  do {
-    i1 = Math.floor(Math.random() * citations.length);
-    do {
-      i2 = Math.floor(Math.random() * citations.length);
-    } while (i1 === i2);
-    key = [Math.min(i1, i2), Math.max(i1, i2)].join("-");
-  } while (shownPairs.has(key));
-
-  shownPairs.add(key);
-
+  const [i1, i2] = combinationPool.pop(); // 每次拿一个新组合
   document.getElementById('left-page').textContent = citations[i1].citation_text;
   document.getElementById('right-page').textContent = citations[i2].citation_text;
+}
+
+// Fisher-Yates 洗牌算法
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
 }
 
 loadAllCitations();
