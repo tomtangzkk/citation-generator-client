@@ -19,7 +19,7 @@ body {
   justify-content: center;
   color: black;
   gap: 10px;
-  font-size: 1em;
+  font-size: 0.5em;
   flex-wrap: wrap;
 }
 
