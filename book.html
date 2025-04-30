@@ -8,6 +8,12 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
+  <!-- 在body里最前面加 -->
+<div class="cover-page" id="cover-page">
+  <div class="cover-text">book of<br>citation</div>
+  <button onclick="enterBook()">Enter</button>
+</div>
+
   <div class="double-page-container">
     <div class="page left-page" id="left-page">Loading...</div>
     <div class="page right-page" id="right-page">Loading...</div>
