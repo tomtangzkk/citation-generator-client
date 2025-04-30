@@ -11,19 +11,18 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-let citations = [];
-let combinationPool = [];
-let shownTextPairs = new Set(); // 防止重复内容
+let allCitations = [];
+let citationPool = [];
 
 function loadAllCitations() {
   db.collection('citations').orderBy('timestamp', 'asc').get()
     .then(snapshot => {
-      citations = snapshot.docs.map(doc => doc.data());
-      if (citations.length > 1) {
-        createCombinationPool();
-        loadRandomCitation();
+      allCitations = snapshot.docs.map(doc => doc.data()).filter(c => !!c.citation_text?.trim());
+      if (allCitations.length > 1) {
+        resetCitationPool();
+        loadNextSpread();
       } else {
-        document.getElementById('left-page').textContent = citations[0]?.citation_text || "No citation.";
+        document.getElementById('left-page').textContent = allCitations[0]?.citation_text || "No citation.";
         document.getElementById('right-page').textContent = "";
       }
     })
@@ -32,59 +31,23 @@ function loadAllCitations() {
     });
 }
 
-function createCombinationPool() {
-  combinationPool = [];
-  shownTextPairs.clear(); // 新一轮重置历史组合
-
-  for (let i = 0; i < citations.length; i++) {
-    for (let j = i + 1; j < citations.length; j++) {
-      const text1 = citations[i].citation_text?.trim();
-      const text2 = citations[j].citation_text?.trim();
-      if (text1 && text2 && text1 !== text2) {
-        combinationPool.push([i, j]);
-      }
-    }
-  }
-  shuffleArray(combinationPool);
+function resetCitationPool() {
+  citationPool = [...allCitations];
+  shuffleArray(citationPool);
 }
 
-function loadRandomCitation() {
-  if (combinationPool.length === 0) {
-    createCombinationPool(); // 重置组合池
+function loadNextSpread() {
+  if (citationPool.length < 2) {
+    resetCitationPool();
   }
 
-  // 防止死循环，最多尝试100次
-  for (let attempt = 0; attempt < 100; attempt++) {
-    if (combinationPool.length === 0) {
-      createCombinationPool();
-    }
+  const left = citationPool.pop();
+  const right = citationPool.pop();
 
-    const [i1, i2] = combinationPool.pop();
-    const text1 = citations[i1].citation_text?.trim() || "";
-    const text2 = citations[i2].citation_text?.trim() || "";
-
-    // 创建组合键（无序组合），确保镜像也算重复
-    const key = [text1, text2].sort().join("||");
-
-    if (!shownTextPairs.has(key)) {
-      shownTextPairs.add(key);
-
-      document.getElementById('left-page').textContent = text1;
-      document.getElementById('right-page').textContent = text2;
-      return;
-    }
-  }
-
-  // 如果所有组合都展示过，开始新一轮
-  document.getElementById('left-page').textContent = "You've read everything.";
-  document.getElementById('right-page').textContent = "Restarting soon...";
-  setTimeout(() => {
-    createCombinationPool();
-    loadRandomCitation();
-  }, 1000);
+  document.getElementById('left-page').textContent = left?.citation_text || "Empty";
+  document.getElementById('right-page').textContent = right?.citation_text || "Empty";
 }
 
-// 洗牌算法
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
