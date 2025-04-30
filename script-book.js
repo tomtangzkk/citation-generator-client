@@ -22,7 +22,7 @@ A poem written without language. Words borrowed, translated into images. A synta
 The site leaves its own trace. Layers printed, scraped, rewritten. Time thickens on paper.` }
 ];
 
-// ====== Firebase Config & Loading ======
+// ====== Firebase Config & Initialization ======
 const firebaseConfig = {
   apiKey: "AIzaSyBx7AQZHanzqolsTz9akbUlU5Im_Fh_1z8",
   authDomain: "citedfromwithinitself.firebaseapp.com",
@@ -38,8 +38,14 @@ const db = firebase.firestore();
 
 let allCitations = [];
 let citationPool = [];
+let historyStack = [];
 
-// ====== 加载所有 citation（本地 + Firebase）并洗牌 ======
+// ====== 页面加载时启动 ======
+window.onload = () => {
+  loadAllCitations();
+};
+
+// ====== 从 Firebase 加载 citation 并合并本地 static ======
 function loadAllCitations() {
   db.collection('citations').orderBy('timestamp', 'asc').get()
     .then(snapshot => {
@@ -49,36 +55,21 @@ function loadAllCitations() {
 
       allCitations = [...staticCitations, ...liveCitations];
       resetCitationPool();
-      loadNextSpread();
+      loadNextSpread(); // 默认展示第一页
     })
     .catch(error => {
       console.error("Error loading citations:", error);
 
-      // 如果 Firebase 失败，保底只展示 static 本地 citation
       allCitations = [...staticCitations];
       resetCitationPool();
       loadNextSpread();
     });
 }
 
-// ====== 重置引用池并打乱 ======
 function resetCitationPool() {
   citationPool = [...allCitations];
   shuffleArray(citationPool);
-}
-
-// ====== 每次展示两个 citation ======
-function loadNextSpread() {
-  if (citationPool.length < 2) {
-    alert("You've finished reading all citations.");
-    return;
-  }
-
-  const left = citationPool.pop();
-  const right = citationPool.pop();
-
-  document.getElementById('left-page').textContent = left?.citation_text || "—";
-  document.getElementById('right-page').textContent = right?.citation_text || "—";
+  historyStack = []; // 每次重置也重置历史
 }
 
 // ====== Fisher-Yates 洗牌算法 ======
@@ -89,7 +80,38 @@ function shuffleArray(array) {
   }
 }
 
-// ====== 页面加载时启动 ======
-window.onload = () => {
-  loadAllCitations();
-};
+// ====== 下一页 ======
+function loadNextSpread() {
+  if (citationPool.length < 2) {
+    alert("You've finished reading all citations.");
+    return;
+  }
+
+  const left = citationPool.pop();
+  const right = citationPool.pop();
+
+  historyStack.push([left, right]); // 保存历史
+  displaySpread(left, right);
+}
+
+// ====== 上一页 ======
+function loadPreviousSpread() {
+  if (historyStack.length < 2) {
+    alert("You're at the beginning.");
+    return;
+  }
+
+  // 当前页退回 citationPool
+  const current = historyStack.pop();
+  citationPool.push(current[1]);
+  citationPool.push(current[0]);
+
+  const previous = historyStack[historyStack.length - 1];
+  displaySpread(previous[0], previous[1]);
+}
+
+// ====== 通用展示函数 ======
+function displaySpread(left, right) {
+  document.getElementById('left-page').textContent = left?.citation_text || "—";
+  document.getElementById('right-page').textContent = right?.citation_text || "—";
+}
