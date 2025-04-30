@@ -19,7 +19,7 @@ body {
   justify-content: center;
   color: black;
   gap: 10px;
-  font-size: 1em;
+  font-size: 0.5em;
   margin-top: 50px;
   flex-wrap: wrap;
 }
@@ -28,7 +28,7 @@ body {
   border: none;
   border-bottom: 1px solid white;
   background: transparent;
-  font-size: 1em;
+  font-size: 0.5em;
   text-align: center;
   padding: 3px 5px;
   width: 140px;
