@@ -9,6 +9,7 @@ body {
     align-items: center;
     justify-content: center;
     height: 100vh;
+    background-color:black;
   }
   
   /* ----------------- */
@@ -70,6 +71,7 @@ body {
     border: 0.5pt solid black;
     box-sizing: border-box;
     overflow: hidden;
+      
   }
   
   .page {
@@ -84,6 +86,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+       background-color:white;
   }
   
   .right-page {
