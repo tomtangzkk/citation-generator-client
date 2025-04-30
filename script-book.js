@@ -47,24 +47,38 @@ window.onload = () => {
 
 // ====== 从 Firebase 加载 citation 并合并本地 static ======
 function loadAllCitations() {
-  db.collection('citations').orderBy('timestamp', 'asc').get()
-    .then(snapshot => {
+  db.collection('citations').orderBy('timestamp', 'asc')
+    .onSnapshot(snapshot => {
       const liveCitations = snapshot.docs
         .map(doc => doc.data())
         .filter(c => !!c.citation_text?.trim());
 
-      allCitations = [...staticCitations, ...liveCitations];
-      resetCitationPool();
-      loadNextSpread(); // 默认展示第一页
-    })
-    .catch(error => {
-      console.error("Error loading citations:", error);
+      // 合并 static 和 Firebase citation
+      const combined = [...staticCitations, ...liveCitations];
 
-      allCitations = [...staticCitations];
-      resetCitationPool();
-      loadNextSpread();
+      // 判断是否有新增
+      const newCitations = combined.filter(c =>
+        !allCitations.find(existing => existing.citation_text === c.citation_text)
+      );
+
+      if (newCitations.length > 0) {
+        // 如果是首次加载
+        if (allCitations.length === 0) {
+          allCitations = combined;
+          resetCitationPool();
+          loadNextSpread();
+        } else {
+          // 增量添加
+          allCitations.push(...newCitations);
+          citationPool.push(...newCitations);
+          shuffleArray(citationPool);
+        }
+      }
+    }, error => {
+      console.error("Error in realtime listener:", error);
     });
 }
+
 
 function resetCitationPool() {
   citationPool = [...allCitations];
