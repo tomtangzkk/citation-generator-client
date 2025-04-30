@@ -8,11 +8,13 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
+  <div class="book-cover">
   <div class="generator-row">
     <input type="text" id="name" placeholder="Name">
     <em><input type="text" id="work" placeholder="Work Title"></em>,
     <span id="location">Locating...</span>,
     <span id="current-time">Loading time...</span>.
+  </div>
   </div>
 
   <div class="button-container">
@@ -20,8 +22,7 @@
     <button onclick="generateRandom()">Random</button>
   </div>
 
-  <div class="book-cover">
-  </div>
+ 
 
   <script src="script-generator.js"></script>
 </body>
