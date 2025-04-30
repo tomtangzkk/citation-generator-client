@@ -145,18 +145,22 @@ body {
   .double-page-container {
     flex-direction: column;
     width: 90vw;
-    height: auto;
+    height: 100vh; /* 确保高度固定为一整屏 */
     border: none;
+    overflow: hidden;
   }
 
   .page {
     width: 100%;
-    height: auto;
+    height: 50vh; /* 每页占半屏 */
     padding: 20px;
     border-right: none;
     border-bottom: 1px solid black;
     font-size: 1em;
     text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .right-page {
@@ -176,4 +180,3 @@ body {
     font-size: 1.1em;
   }
 }
-
