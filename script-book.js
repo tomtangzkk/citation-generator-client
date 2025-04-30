@@ -22,7 +22,6 @@ A poem written without language. Words borrowed, translated into images. A synta
 The site leaves its own trace. Layers printed, scraped, rewritten. Time thickens on paper.` }
 ];
 
-// ====== Firebase Config & Loading ======
 const firebaseConfig = {
   apiKey: "AIzaSyBx7AQZHanzqolsTz9akbUlU5Im_Fh_1z8",
   authDomain: "citedfromwithinitself.firebaseapp.com",
@@ -36,50 +35,58 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-let allCitations = [];
-let citationPool = [];
+let allCitations = [];       // 所有 citation 文档
+let displayedIndices = new Set();  // 已展示的索引组合
 
-function loadAllCitations() {
-  db.collection('citations').orderBy('timestamp', 'asc').get()
-    .then(snapshot => {
-      const liveCitations = snapshot.docs.map(doc => doc.data()).filter(c => !!c.citation_text?.trim());
-      allCitations = [...staticCitations, ...liveCitations];
+// 页面初次加载
+window.onload = async () => {
+  try {
+    const snapshot = await db.collection("citations")
+      .orderBy("timestamp", "desc")
+      .get();
 
-      if (allCitations.length > 1) {
-        resetCitationPool();
-        loadNextSpread();
-      } else {
-        document.getElementById('left-page').textContent = allCitations[0]?.citation_text || "No citation.";
-        document.getElementById('right-page').textContent = "";
-      }
-    })
-    .catch(error => {
-      console.error("Error loading citations:", error);
-    });
-}
+    allCitations = snapshot.docs.map(doc => doc.data().citation_text);
 
-function resetCitationPool() {
-  citationPool = [...allCitations];
-  shuffleArray(citationPool);
-}
+    if (allCitations.length < 2) {
+      alert("Not enough citations to display.");
+      return;
+    }
+
+    loadNextSpread();
+
+  } catch (err) {
+    console.error("Error loading citations:", err);
+  }
+};
 
 function loadNextSpread() {
-  if (citationPool.length < 2) {
-    resetCitationPool();
+  // 计算所有可能的非重复配对数
+  const totalPairs = Math.floor(allCitations.length / 2);
+
+  // 如果所有对都已经展示完了
+  if (displayedIndices.size >= totalPairs) {
+    alert("You've read all available citations.");
+    return;
   }
 
-  const left = citationPool.pop();
-  const right = citationPool.pop();
+  let pairIndex;
+  let attempts = 0;
 
-  document.getElementById('left-page').textContent = left?.citation_text || "Empty";
-  document.getElementById('right-page').textContent = right?.citation_text || "Empty";
+  // 尝试找到一个未展示的随机配对对索引
+  do {
+    pairIndex = Math.floor(Math.random() * totalPairs);
+    attempts++;
+    if (attempts > 100) {
+      alert("Failed to find new citations.");
+      return;
+    }
+  } while (displayedIndices.has(pairIndex));
+
+  displayedIndices.add(pairIndex);
+
+  const left = allCitations[pairIndex * 2];
+  const right = allCitations[pairIndex * 2 + 1] || "—";
+
+  document.getElementById("left-page").textContent = left;
+  document.getElementById("right-page").textContent = right;
 }
-
-function shuffleArray(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-}
-
-loadAllCitations();
