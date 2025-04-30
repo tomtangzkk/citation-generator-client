@@ -64,9 +64,9 @@ body {
   
   .double-page-container {
     display: flex;
-    width: 80%;
+    width: 60vw;
     max-width: 1000px;
-    height: 60vh;
+    height: 80vh;
     border: 0.5pt solid black;
     box-sizing: border-box;
     overflow: hidden;
