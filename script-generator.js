@@ -69,7 +69,7 @@ const firebaseConfig = {
   // ====== Generate Random Citation ======
 async function generateRandom() {
   try {
-    const res = await fetch("https://citedfromwithin-blgl44ydg-tom-tangzks-projects.vercel.app/api/generate-citation", {
+    const res = await fetch("https://citedfromwithin-enjn3dphe-tom-tangzks-projects.vercel.app/api/generate-citation", {
       method: "GET",
       mode: "cors"
     });
