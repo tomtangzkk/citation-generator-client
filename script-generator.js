@@ -1,86 +1,84 @@
-// ====== Firebase Config ======
+// ====== Your Firebase Config ======
 const firebaseConfig = {
-  apiKey: "AIzaSyBx7AQZHanzqolsTz9akbUlU5Im_Fh_1z8",
-  authDomain: "citedfromwithinitself.firebaseapp.com",
-  projectId: "citedfromwithinitself",
-  storageBucket: "citedfromwithinitself.appspot.com",
-  messagingSenderId: "783270994329",
-  appId: "1:783270994329:web:bb54fdaf0374f92b33f308",
-  measurementId: "G-72WM88H17N"
-};
-
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-
-// ====== Load IP Location ======
-let userLocation = "Unknown";
-fetch('https://ipinfo.io/json?token=ee05a00e89fe82')
-  .then(response => response.json())
-  .then(data => {
-    userLocation = data.city || "Unknown Location";
-    const locEl = document.getElementById('location');
-    if (locEl) locEl.textContent = userLocation;
-  })
-  .catch(error => {
-    console.error('Error fetching location:', error);
-    const locEl = document.getElementById('location');
-    if (locEl) locEl.textContent = "Unknown Location";
-  });
-
-// ====== Update Current Time on Load ======
-const now = new Date();
-const timeEl = document.getElementById('current-time');
-if (timeEl) timeEl.textContent = now.toLocaleString();
-
-// ====== Add Citation (Manual) ======
-async function addCitation() {
-  const name = document.getElementById('name').value.trim();
-  const work = document.getElementById('work').value.trim();
-
-  if (!name || !work) {
-    alert("Please fill in both name and work.");
-    return;
-  }
-
-  try {
-    const response = await fetch('/api/manual-citation', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, work })
+    apiKey: "AIzaSyBx7AQZHanzqolsTz9akbUlU5Im_Fh_1z8",
+    authDomain: "citedfromwithinitself.firebaseapp.com",
+    projectId: "citedfromwithinitself",
+    storageBucket: "citedfromwithinitself.appspot.com",
+    messagingSenderId: "783270994329",
+    appId: "1:783270994329:web:bb54fdaf0374f92b33f308",
+    measurementId: "G-72WM88H17N"
+  };
+  
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+  
+  // ====== Load IP Location ======
+  let userLocation = "Unknown";
+  
+  fetch('https://ipinfo.io/json?token=ee05a00e89fe82')  // ✅ Your token is now used here
+    .then(response => response.json())
+    .then(data => {
+      userLocation = data.city || "Unknown Location";
+      document.getElementById('location').textContent = userLocation;
+    })
+    .catch(error => {
+      console.error('Error fetching location:', error);
+      document.getElementById('location').textContent = "Unknown Location";
     });
-
-    const result = await response.json();
-
-    if (!response.ok) {
-      throw new Error(result.error || "Submission failed.");
-    }
-
-    alert(`Citation added to ${result.volume} successfully!`);
-    document.getElementById('current-time').textContent = new Date().toLocaleString();
-    document.getElementById('location').textContent = result.citation.location || 'Recorded';
-
-    // Optional: clear form fields after submit
-    document.getElementById('name').value = '';
-    document.getElementById('work').value = '';
-  } catch (err) {
-    console.error("Submit error:", err);
-    alert("Error adding citation.");
+  
+  // ====== Update Current Time Every Second ======
+  function updateTime() {
+    const now = new Date();
+    const timeString = now.toISOString().slice(0, 10);
+    document.getElementById('current-time').textContent = timeString;
   }
-}
+  setInterval(updateTime, 1000);
+  updateTime();
+  
+  // ====== Add Citation ======
+  function addCitation() {
+    const name = document.getElementById('name').value.trim();
+    const work = document.getElementById('work').value.trim();
+    const location = userLocation;
+    const now = new Date();
+    const timeString = now.toISOString().slice(0, 10);
+  
+    if (!name || !work) {
+      alert("Please fill in both Name and Work Title!");
+      return;
+    }
+  
+    const citationText = `${name}, *${work}*, ${location}, ${timeString}.`;
+  
+    db.collection('citations').add({
+      name: name,
+      description: work,
+      location: location,
+      timestamp: now,
+      citation_text: citationText
+    })
+    .then(() => {
+      console.log("Citation added!");
+      window.location.href = "book.html"; // Go to the citation book
+    })
+    .catch(error => {
+      console.error("Error adding citation:", error);
+    });
+  }
 
-// ====== Generate Random Citation ======
+  // ====== Generate Random Citation ======
 async function generateRandom() {
   try {
-    const response = await fetch('/api/generate-citation');
-    if (!response.ok) throw new Error('Failed to fetch citation');
-
-    const data = await response.json();
+    const res = await fetch("https://citedfromwithin-il8z9622k-tom-tangzks-projects.vercel.app/api/generate-citation", {
+      method: "GET",
+      mode: "cors"
+    });
+    const data = await res.json();
     document.getElementById('name').value = data.name;
     document.getElementById('work').value = data.work;
-    document.getElementById('location').textContent = data.location;
-    document.getElementById('current-time').textContent = new Date().toLocaleString();
   } catch (error) {
-    console.error('Error generating citation:', error);
-    alert('Failed to generate citation. Please try again.');
+    console.error("Error generating random citation:", error);
+    alert("Failed to generate citation. Please try again later.");
   }
 }
+
