@@ -80,6 +80,17 @@ body {
   overflow: hidden;
 }
 
+.book-cover{
+ display: flex;
+  width: 30vw;
+  max-width: 1000px;
+  height: 80vh;
+  border: 0.5pt solid black;
+  box-sizing: border-box;
+  overflow: hidden;
+  
+}
+
 .page {
   width: 50%;
   height: 100%;
