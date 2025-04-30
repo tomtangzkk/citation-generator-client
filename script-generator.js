@@ -36,17 +36,37 @@ const firebaseConfig = {
   updateTime();
   
   // ====== Add Citation ======
-  function addCitation() {
-    const name = document.getElementById('name').value.trim();
-    const work = document.getElementById('work').value.trim();
-    const location = userLocation;
-    const now = new Date();
-    const timeString = now.toISOString().slice(0, 10);
-  
-    if (!name || !work) {
-      alert("Please fill in both Name and Work Title!");
-      return;
+async function addCitation() {
+  const name = document.getElementById('name').value.trim();
+  const work = document.getElementById('work').value.trim();
+
+  if (!name || !work) {
+    alert("Please fill in both name and work.");
+    return;
+  }
+
+  try {
+    const response = await fetch('/api/manual-citation', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, work })
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.error || "Submission failed.");
     }
+
+    alert(`Citation added to ${result.volume} successfully!`);
+    document.getElementById('current-time').textContent = new Date().toLocaleString();
+    document.getElementById('location').textContent = result.citation.location || 'Recorded';
+  } catch (err) {
+    console.error("Submit error:", err);
+    alert("Error adding citation.");
+  }
+}
+
   
     const citationText = `${name}, *${work}*, ${location}, ${timeString}.`;
   
