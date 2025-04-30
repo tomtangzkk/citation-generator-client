@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Citation Reader</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+  <div class="double-page-container">
+    <div class="page left-page" id="left-page">Loading...</div>
+    <div class="page right-page" id="right-page">Loading...</div>
+  </div>
+
+  <div class="nav-container">
+    <button onclick="loadNextSpread()">Next Spread →</button>
+    <button onclick="window.location.href='index.html'">Add Citation</button>
+    <button onclick="window.location.href='book.html'">← Back to Covers</button>
+  </div>
+
+  <script>
+    // 将 volume 参数提取出来用于脚本加载
+    const urlParams = new URLSearchParams(window.location.search);
+    const currentVolume = urlParams.get('volume') || 'volume1';
+  </script>
+
+  <script src="script-book.js"></script>
+</body>
+</html>
