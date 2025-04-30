@@ -15,13 +15,14 @@ body {
 /* 生成Citation页面布局 */
 .generator-row {
   display: flex;
-  align-items: center;
+  flex-direction: column; /* 让元素竖着排列 */
+  align-items: center;    /* 居中对齐 */
   justify-content: center;
+  gap: 15px;
+  font-size: 1em;
   color: black;
-  gap: 10px;
-  font-size: 0.5em;
-  flex-wrap: wrap;
 }
+
 
 
 .generator-row input[type="text"] {
