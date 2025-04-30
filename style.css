@@ -159,3 +159,45 @@ body {
   border-radius: 5px;
   cursor: pointer;
 }
+
+@media (max-width: 768px) {
+  .book-cover {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  .generator-row {
+    flex-direction: column;
+    gap: 15px;
+    font-size: 1.1em;
+    text-align: center;
+  }
+
+  .generator-row input[type="text"] {
+    width: 80vw;
+    font-size: 1.2em;
+  }
+
+  .generator-row em {
+    font-style: normal;
+  }
+
+  .button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+    width: 80vw;
+  }
+
+  .button-container button {
+    padding: 12px;
+    font-size: 1.1em;
+    width: 100%;
+  }
+}
