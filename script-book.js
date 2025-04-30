@@ -1,4 +1,3 @@
-// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyBx7AQZHanzqolsTz9akbUlU5Im_Fh_1z8",
   authDomain: "citedfromwithinitself.firebaseapp.com",
@@ -14,6 +13,7 @@ const db = firebase.firestore();
 
 let citations = [];
 let combinationPool = [];
+let shownTextPairs = new Set(); // 防止重复内容
 
 function loadAllCitations() {
   db.collection('citations').orderBy('timestamp', 'asc').get()
@@ -32,9 +32,10 @@ function loadAllCitations() {
     });
 }
 
-// ✅ 只保留内容不同的组合（解决：两页内容一样）
 function createCombinationPool() {
   combinationPool = [];
+  shownTextPairs.clear(); // 新一轮重置历史组合
+
   for (let i = 0; i < citations.length; i++) {
     for (let j = i + 1; j < citations.length; j++) {
       const text1 = citations[i].citation_text?.trim();
@@ -44,27 +45,46 @@ function createCombinationPool() {
       }
     }
   }
-  shuffleArray(combinationPool); // 打乱顺序
+  shuffleArray(combinationPool);
 }
 
 function loadRandomCitation() {
   if (combinationPool.length === 0) {
-    createCombinationPool(); // 用完之后重新生成
+    createCombinationPool(); // 重置组合池
   }
 
-  if (combinationPool.length === 0) {
-    // 所有内容都一样，无法组合
-    document.getElementById('left-page').textContent = "Not enough distinct citations.";
-    document.getElementById('right-page').textContent = "";
-    return;
+  // 防止死循环，最多尝试100次
+  for (let attempt = 0; attempt < 100; attempt++) {
+    if (combinationPool.length === 0) {
+      createCombinationPool();
+    }
+
+    const [i1, i2] = combinationPool.pop();
+    const text1 = citations[i1].citation_text?.trim() || "";
+    const text2 = citations[i2].citation_text?.trim() || "";
+
+    // 创建组合键（无序组合），确保镜像也算重复
+    const key = [text1, text2].sort().join("||");
+
+    if (!shownTextPairs.has(key)) {
+      shownTextPairs.add(key);
+
+      document.getElementById('left-page').textContent = text1;
+      document.getElementById('right-page').textContent = text2;
+      return;
+    }
   }
 
-  const [i1, i2] = combinationPool.pop(); // 每次拿一个新组合
-  document.getElementById('left-page').textContent = citations[i1].citation_text || "Empty";
-  document.getElementById('right-page').textContent = citations[i2].citation_text || "Empty";
+  // 如果所有组合都展示过，开始新一轮
+  document.getElementById('left-page').textContent = "You've read everything.";
+  document.getElementById('right-page').textContent = "Restarting soon...";
+  setTimeout(() => {
+    createCombinationPool();
+    loadRandomCitation();
+  }, 1000);
 }
 
-// Fisher-Yates 洗牌算法
+// 洗牌算法
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
