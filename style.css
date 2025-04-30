@@ -78,7 +78,7 @@ body {
     padding: 40px;
     box-sizing: border-box;
     border-right: 0.25pt solid black;
-    font-size: 1.25em;
+    font-size: 0.75em;
     line-height: 1.6;
     text-align: left;
     display: flex;
@@ -137,7 +137,4 @@ body {
   cursor: pointer;
 }
 
-.page {
-  font-size: 0.75em; /* 原为 1.25em，减小约 40% */
-}
 
