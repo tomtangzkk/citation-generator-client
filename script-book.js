@@ -1,3 +1,28 @@
+// ====== Static Citation Data (Archive) ======
+const staticCitations = [
+  { citation_text: `Tang, Tom. *Filial Scripts.* Ongoing project, Fall 2023.
+An exchange of shipment boxes between kin; care circulates silently across distance. A familial bond unfolds through objects in motion.` },
+  { citation_text: `Tang, Tom. *Chimeras & Forsaken* (with Jeewon). Web, print, installation, Fall 2023.
+Adapters misfit. Meanings dislocate. IP shifts. Belonging fails and forms again—quietly.` },
+  { citation_text: `Tang, Tom. *Source.* Website, Fall 2023.
+A coded reflection on Baltimore’s gaze. Safety and surveillance blur; interaction becomes exposure.` },
+  { citation_text: `Tang, Tom. *Chase.* Code-based web experiment, Fall 2023.
+Traces online. Residue follows. Who watches the trail we leave behind?` },
+  { citation_text: `Tang, Tom. *It’s on the Stairs.* Interactive web installation, Fall 2023.
+You memorize coordinates. Click to match. Your movements become part of the archive.` },
+  { citation_text: `Tang, Tom. *Secret Garden.* Offline website, Fall 2023.
+Only accessible in absence of internet. Disconnection becomes the only way in.` },
+  { citation_text: `Tang, Tom. *Waste.* Photography, Fall 2023.
+A taxonomy of neglect. Looking into bins: inverted altars of modern life.` },
+  { citation_text: `Tang, Tom. *Faint Spark.* Video, Fall 2023.
+New Year in slow burn. Fireworks remembered—not seen, but flickering in thought.` },
+  { citation_text: `Tang, Tom. *Unwritten Poem.* Experimental video, Fall 2023.
+A poem written without language. Words borrowed, translated into images. A syntax of memory.` },
+  { citation_text: `Tang, Tom. *Paprika! (Palimpsest).* Graphic publication, Fall 2023.
+The site leaves its own trace. Layers printed, scraped, rewritten. Time thickens on paper.` }
+];
+
+// ====== Firebase Config & Loading ======
 const firebaseConfig = {
   apiKey: "AIzaSyBx7AQZHanzqolsTz9akbUlU5Im_Fh_1z8",
   authDomain: "citedfromwithinitself.firebaseapp.com",
@@ -17,7 +42,9 @@ let citationPool = [];
 function loadAllCitations() {
   db.collection('citations').orderBy('timestamp', 'asc').get()
     .then(snapshot => {
-      allCitations = snapshot.docs.map(doc => doc.data()).filter(c => !!c.citation_text?.trim());
+      const liveCitations = snapshot.docs.map(doc => doc.data()).filter(c => !!c.citation_text?.trim());
+      allCitations = [...staticCitations, ...liveCitations];
+
       if (allCitations.length > 1) {
         resetCitationPool();
         loadNextSpread();
