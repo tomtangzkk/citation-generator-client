@@ -20,45 +20,7 @@ New Year in slow burn. Fireworks remembered—not seen, but flickering in though
 A poem written without language. Words borrowed, translated into images. A syntax of memory.` },
   { citation_text: `Tang, Tom. *Paprika! (Palimpsest).* Graphic publication, Fall 2023.
 The site leaves its own trace. Layers printed, scraped, rewritten. Time thickens on paper.` }
-  { citation_text: `Tang, Tom. *Blossom of Smoke.* Artist’s book, Spring 2024.
-Fireworks unfold in fragments. A cultural ban resisted by pages that burst and fall.` },
-  { citation_text: `Tang, Tom. *Still Books.* Book experiments, Spring 2024.
-Time resists the spine. Books loop, stall, or refuse to open—yet still pulse.` },
-  { citation_text: `Tang, Tom. *Puzzle of Everything.* Interactive project, Spring 2024.
-Practice rendered as a puzzle. Each interaction adds to the reflection.` },
-  { citation_text: `Tang, Tom. *Image, Unassigned.* Image series, Spring 2024.
-Randomly scraped images detached from source—drifting without anchors.` },
-  { citation_text: `Tang, Tom. *Adobe Notify.* Plugin parody, Spring 2024.
-A soft voice of labor control. Satirizing endless productivity and invisible management.` },
-
-  // ====== Fall 2024 ======
-  { citation_text: `Tang, Tom. *Symphony Strings.* Animation series, Fall 2024.
-Cosmic threads visualized in string and motion.` },
-  { citation_text: `Tang, Tom. *Noise.* Motion piece, Fall 2024.
-A small universe flickers. Cosmos rendered in bursts of image.` },
-  { citation_text: `Tang, Tom (with collaborator). *Cassette.* Audio object, Fall 2024.
-Sounds remixed and encased. Memory etched in magnetic loops.` },
-  { citation_text: `Tang, Tom. *On Site.* Book installation, Fall 2024.
-Two books—giant and miniature. Time stretches or condenses with scale.` },
-  { citation_text: `Tang, Tom. *Unfold Now.* Experimental scanner, Fall 2024.
-How do you read? Your attention mapped into book time.` },
-  { citation_text: `Tang, Tom. *#time #book #sequence.* Zine, Fall 2024.
-Each page is a tick. Reading becomes rhythm, memory, pulse.` },
-  { citation_text: `Tang, Tom. *Night School.* Visual identity, Fall 2024.
-Designed for the Yale School of Art’s nighttime program.` },
-  { citation_text: `Tang, Tom. *Clock.* Stop-motion film, Fall 2024.
-A small clock resists its gears. Time and agency screened in Times Square.` },
-  { citation_text: `Tang, Tom. *Time Trap.* Short film, Fall 2024.
-Repetition becomes prison. A loop of longing, a spiral of hours.` },
-  { citation_text: `Tang, Tom. *Time Book.* Anthology and typeface, Fall 2024.
-Essays on time and books, typeset in ink’s own rhythm. Structure becomes story.` }
-
  
-  { citation_text: `Tang, Tom. *New School.* Typeface design, Spring 2025.
-Century Schoolbook reimagined—tighter rhythm, softened contrast, legible in motion.` },
-  { citation_text: `Tang, Tom. *The Oblique Character.* Visual identity, Spring 2025.
-A slash as structure, name, and self. Designed for the Yale MFA thesis exhibition.` }
-
 ];
    
  
