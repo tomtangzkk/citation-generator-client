@@ -20,8 +20,6 @@ New Year in slow burn. Fireworks remembered—not seen, but flickering in though
 A poem written without language. Words borrowed, translated into images. A syntax of memory.` },
   { citation_text: `Tang, Tom. *Paprika! (Palimpsest).* Graphic publication, Fall 2023.
 The site leaves its own trace. Layers printed, scraped, rewritten. Time thickens on paper.` }
-]
-   // ====== Spring 2024 ======
   { citation_text: `Tang, Tom. *Blossom of Smoke.* Artist’s book, Spring 2024.
 Fireworks unfold in fragments. A cultural ban resisted by pages that burst and fall.` },
   { citation_text: `Tang, Tom. *Still Books.* Book experiments, Spring 2024.
@@ -55,15 +53,15 @@ Repetition becomes prison. A loop of longing, a spiral of hours.` },
   { citation_text: `Tang, Tom. *Time Book.* Anthology and typeface, Fall 2024.
 Essays on time and books, typeset in ink’s own rhythm. Structure becomes story.` }
 
-  // ====== Spring 2025 ======
+ 
   { citation_text: `Tang, Tom. *New School.* Typeface design, Spring 2025.
 Century Schoolbook reimagined—tighter rhythm, softened contrast, legible in motion.` },
   { citation_text: `Tang, Tom. *The Oblique Character.* Visual identity, Spring 2025.
 A slash as structure, name, and self. Designed for the Yale MFA thesis exhibition.` }
 
-  
-  ;
-
+];
+   
+ 
 // ====== Firebase Config & Initialization ======
 const firebaseConfig = {
   apiKey: "AIzaSyBx7AQZHanzqolsTz9akbUlU5Im_Fh_1z8",
